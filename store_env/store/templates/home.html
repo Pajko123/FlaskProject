@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	{% for sell in sells.items %}
+		<article class="media content-section">
+			<img  class="img-thumbnail article-img"  src="{{ url_for('static', filename='img/'+ sell.author.image_file) }}" alt="" style="max-height: 50px; max-width: 50px;">
+			<div class="media-body">
+				<div class="article-metadata">
+					<a class="mr-2" href="{{ url_for('user_sells', username=sell.author.username) }}">{{ sell.author.username }}</a>
+					<small class="text-muted">{{ sell.date_posted.strftime('%d-%m-%Y') }}</small>
+				</div>
+				<h2><a class="article-title" href="{{ url_for('sell', sell_id = sell.id) }}">{{ sell.title }}</a></h2>
+				<p class="article-content">{{ sell.content }}</p>
+				<p class="article-content">{{ sell.price }}</p>
+				<img src="{{ url_for('static', filename='img/'+ sell.image_file) }}">
+			</div>
+		</article>
+	{% endfor %}
+	{% for page_num in sells.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+		{% if page_num %}
+			{% if sells.page == page_num %}
+				<a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+			{% else %}
+				<a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+			{% endif %}
+
+		{% else %}
+		{% endif %}
+	{% endfor %}
+
+{% endblock content %}
